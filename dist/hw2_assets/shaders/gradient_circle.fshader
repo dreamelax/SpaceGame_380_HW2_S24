@@ -2,11 +2,17 @@ precision mediump float;
 
 varying vec4 v_Position;
 
+uniform vec4 u_Color; ////////////
+
+
 // HOMEWORK 2 - TODO
 /*
 	The fragment shader is where pixel colors are decided.
 	You'll have to modify this code to make the gradient_circles have a variable color
+
 */
+
+
 void main(){
 	// Default alpha is 0
 	float alpha = 0.0;
@@ -22,6 +28,11 @@ void main(){
 		alpha = 4.0*dist_sq;
 	}
 
+	
+
 	// Use the alpha value in our color
-	gl_FragColor = vec4(1.0, 0.0, 0.0, alpha);
+	//gl_FragColor = vec4(0.0, 0.0, 0.0, alpha);
+
+	gl_FragColor = vec4(u_Color.rgb, alpha); // new
+
 }

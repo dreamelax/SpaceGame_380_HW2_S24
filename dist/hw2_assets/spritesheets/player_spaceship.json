@@ -1,144 +1,194 @@
 {
-	"name": "player_spaceship",
-	"spriteSheetImage": "player_spaceship.png",
-	"spriteWidth": 256,
-	"spriteHeight": 256,
-	"leftBuffer": 0,
-	"rightBuffer": 0,
-	"topBuffer": 0,
-	"bottomBuffer": 0,
-	"columns": 5,
-	"rows": 5,
-	"animations": [
-		{
-			"name": "idle",
-			"repeat": true,
-			"frames": [
-				{
-					"index": 0,
-					"duration": 10
-				},
-				{
-					"index": 1,
-					"duration": 10
-				},
-				{
-					"index": 2,
-					"duration": 10
-				}
-			]
-		},
-		{
-			"name": "boost",
-			"repeat": true,
-			"frames": [
-				{
-					"index": 3,
-					"duration": 10
-				},
-				{
-					"index": 4,
-					"duration": 10
-				},
-				{
-					"index": 5,
-					"duration": 10
-				}
-			]
-		},
-		{
-			"name": "shield",
-			"repeat": false,
-			"frames": [
-				{
-					"index": 6,
-					"duration": 3
-				},
-				{
-					"index": 7,
-					"duration": 3
-				},
-				{
-					"index": 8,
-					"duration": 3
-				},
-				{
-					"index": 9,
-					"duration": 3
-				},
-				{
-					"index": 10,
-					"duration": 3
-				},
-				{
-					"index": 11,
-					"duration": 3
-				},
-				{
-					"index": 12,
-					"duration": 3
-				}
-			]
-		},
-		{
-			"name": "explode",
-			"repeat": false,
-			"frames": [
-				{
-					"index": 13,
-					"duration": 2
-				},
-				{
-					"index": 14,
-					"duration": 2
-				},
-				{
-					"index": 15,
-					"duration": 2
-				},
-				{
-					"index": 16,
-					"duration": 2
-				},
-				{
-					"index": 17,
-					"duration": 2
-				},
-				{
-					"index": 18,
-					"duration": 2
-				},
-				{
-					"index": 19,
-					"duration": 2
-				},
-				{
-					"index": 20,
-					"duration": 2
-				},
-				{
-					"index": 21,
-					"duration": 2
-				},
-				{
-					"index": 22,
-					"duration": 2
-				},
-				{
-					"index": 23,
-					"duration": 2
-				}
-			]
-		},
-		{
-			"name": "dead",
-			"repeat": false,
-			"frames": [
-				{
-					"index": 24,
-					"duration": 1
-				}
-			]
-		}
-	]
+    "name": "Starship_Dreamland",
+    "spriteSheetImage": "Starship_Dreamland.png",
+    "spriteWidth": 256,
+    "spriteHeight": 256,
+    "leftBuffer": 0,
+    "rightBuffer": 0,
+    "topBuffer": 0,
+    "bottomBuffer": 0,
+    "columns": 10,
+    "rows": 6,
+    "animations": [
+        {
+            "name": "idle",
+            "repeat": true,
+            "frames": [
+                {
+                    "index": 0,
+                    "duration": 6
+                },
+                {
+                    "index": 1,
+                    "duration": 6
+                },
+                {
+                    "index": 2,
+                    "duration": 6
+                },
+                {
+                    "index": 3,
+                    "duration": 6
+                },
+                {
+                    "index": 4,
+                    "duration": 6
+                },
+                {
+                    "index": 5,
+                    "duration": 6
+                }
+            ]
+        },
+        {
+            "name": "shield",
+            "repeat": true,
+            "frames": [
+                {
+                    "index": 10,
+                    "duration": 6
+                },
+                {
+                    "index": 11,
+                    "duration": 6
+                },
+                {
+                    "index": 12,
+                    "duration": 6
+                },
+                {
+                    "index": 13,
+                    "duration": 6
+                },
+                {
+                    "index": 14,
+                    "duration": 6
+                },
+                {
+                    "index": 15,
+                    "duration": 6
+                },
+                {
+                    "index": 16,
+                    "duration": 6
+                }
+            ]
+        },
+        {
+            "name": "boost",
+            "repeat": true,
+            "frames": [
+                {
+                    "index": 20,
+                    "duration": 6
+                },
+                {
+                    "index": 21,
+                    "duration": 6
+                },
+                {
+                    "index": 22,
+                    "duration": 6
+                },
+                {
+                    "index": 23,
+                    "duration": 6
+                },
+                {
+                    "index": 24,
+                    "duration": 6
+                },
+                {
+                    "index": 25,
+                    "duration": 6
+                },
+                {
+                    "index": 26,
+                    "duration": 6
+                },
+                {
+                    "index": 27,
+                    "duration": 6
+                }
+            ]
+        },
+        {
+            "name": "shooting",
+            "repeat": true,
+            "frames": [
+                {
+                    "index": 30,
+                    "duration": 6
+                },
+                {
+                    "index": 31,
+                    "duration": 6
+                },
+                {
+                    "index": 32,
+                    "duration": 6
+                },
+                {
+                    "index": 33,
+                    "duration": 6
+                },
+                {
+                    "index": 34,
+                    "duration": 6
+                },
+                {
+                    "index": 35,
+                    "duration": 6
+                },
+                {
+                    "index": 36,
+                    "duration": 6
+                }
+            ]
+        },
+        {
+            "name": "explode",
+            "repeat": true,
+            "frames": [
+                {
+                    "index": 40,
+                    "duration": 6
+                },
+                {
+                    "index": 41,
+                    "duration": 6
+                },
+                {
+                    "index": 42,
+                    "duration": 6
+                },
+                {
+                    "index": 43,
+                    "duration": 6
+                },
+                {
+                    "index": 44,
+                    "duration": 6
+                },
+                {
+                    "index": 45,
+                    "duration": 6
+                },
+                {
+                    "index": 46,
+                    "duration": 6
+                }
+            ]
+        },
+        {
+            "name": "dead",
+            "repeat": true,
+            "frames": [
+                {
+                    "index": 50,
+                    "duration": 6
+                }
+            ]
+        }
+    ]
 }

@@ -25,7 +25,7 @@ export default class Homework1_Scene extends Scene {
 	// Here we define member variables of our game, and object pools for adding in game objects
 	private player: AnimatedSprite;
 	private playerDead: boolean = false;
-	private playerShield: number = 5;
+	private playerShield: number = 1;
 	private playerinvincible: boolean = false;
 	private mineralAmount: number = 4;
 	private MIN_SPAWN_DISTANCE: number = 100;
@@ -38,7 +38,7 @@ export default class Homework1_Scene extends Scene {
 	private flockControllers: Array<FlockBehavior> = new Array(this.MAX_FLEET_SIZE);
 
 	// Create an object pool for our fleet
-	private MAX_NUM_ASTEROIDS = 6;
+	private MAX_NUM_ASTEROIDS = 10;
 	private INITIAL_NUM_ASTEROIDS = 1;
 	private numAsteroids = 0;
 	private asteroids: Array<Graphic> = new Array(this.MAX_NUM_ASTEROIDS);
@@ -65,6 +65,15 @@ export default class Homework1_Scene extends Scene {
 	private WORLD_PADDING: Vec2 = new Vec2(64, 64);
 	private ASTEROID_SPEED: number = 100;
 	private ASTEROID_SPEED_INC: number = 10;
+
+	private asteroidColors = [
+		new Color(206,165,103,100),
+		new Color(177,115,64,100),
+		new Color(220,66,28,100),
+		new Color(66,68,54,100),
+		new Color(118,118,118,100),
+		Color.ORANGE
+	];
 
 	// HOMEWORK 2 - TODO
 	/*
@@ -93,7 +102,7 @@ export default class Homework1_Scene extends Scene {
 		/* ##### DO NOT MODIFY ##### */
 		// Create a background layer
 		this.addLayer("background", 0);
-
+		console.log("Game Started");
 		// Add in the background image
 		let bg = this.add.sprite("space", "background");
 		bg.scale.set(2, 2);
@@ -125,6 +134,7 @@ export default class Homework1_Scene extends Scene {
 		this.receiver.subscribe(Homework2Event.PLAYER_DEAD);
 		this.receiver.subscribe(Homework2Event.SPAWN_FLEET);
 		this.receiver.subscribe(Homework2Event.SHIP_DEAD);
+
 	}
 
 	/*
@@ -449,6 +459,7 @@ export default class Homework1_Scene extends Scene {
 					){
 						// Kill asteroid
 						asteroid.visible = false;
+						this.numAsteroidsDestroyed++; // why is this not here? i added this.
 						this.numAsteroids -= 1;
 
 						// Update the gui
@@ -471,10 +482,29 @@ export default class Homework1_Scene extends Scene {
 		// check for asteroid collisions
 		if(!this.playerinvincible){
 			for(let asteroid of this.asteroids){
+				
 				// If the asteroid is spawned in and it overlaps the player
 				if(asteroid.visible && Homework1_Scene.checkAABBtoCircleCollision(<AABB>this.player.collisionShape, <Circle>asteroid.collisionShape)){
 					// Put your code here:
-
+					// console.log("Player Damage");
+					if(this.playerShield>0){ // if playershield > 0 and collision detected then
+						asteroid.visible=false; 
+						this.playerShield--; 
+						this.numAsteroidsDestroyed++;
+						this.emitter.fireEvent(Homework2Event.PLAYER_DAMAGE);
+						//this.player.animation.play("damage");
+						this.shieldsLabel.text = `Shield: ${this.playerShield}`; // updates text fields
+						this.asteroidsLabel.text = `Asteroids: ${this.numAsteroids}`;
+						let collisionDirection = this.player.position.clone().sub(asteroid.position).normalized(); 
+						// player pos - normalized asteroid pos gives the opposite dirction of the asteroid
+						let forceMagnitude = 50; // i added a bit of backwards force when the player gets hit
+            			this.player.position.add(collisionDirection.scaled(forceMagnitude));
+						if(this.playerShield<=0){
+							this.emitter.fireEvent(Homework2Event.PLAYER_DEAD, {any: this.playerShield});
+							asteroid.visible=false;
+							this.playerDead=true;
+						}
+					}
 				}
 			}
 		}
@@ -491,13 +521,19 @@ export default class Homework1_Scene extends Scene {
 	 * Check out that class to see how to create colors and access its fields.
 	 */
 	spawnAsteroid(): void {
+
+		
+		
 		// Find the first viable asteroid
 		let asteroid: Graphic = null;
-
+		//asteroid.setColor(Color.ORANGE);
+		
+		
 		for(let a of this.asteroids){
 			if(!a.visible){
 				// We found a dead asteroid
 				asteroid = a;
+				console.log("asteroid spawned!");
 				break;
 			}
 		}
@@ -519,6 +555,11 @@ export default class Homework1_Scene extends Scene {
 			let dir = Vec2.UP.rotateCCW(Math.random()*Math.PI*2);
 			asteroid.setAIActive(true, {direction: dir});
 			AsteroidAI.SPEED += this.ASTEROID_SPEED_INC;
+
+			// chooses a random color for the asteroid //////////////////
+			let randomColor = this.asteroidColors[Math.floor(Math.random() * this.asteroidColors.length)];
+			// console.log(randomColor); thebug statement
+			asteroid.setColor(randomColor); // this was pretty hard :( 
 
 			// Update the UI
 			this.numAsteroids += 1;
@@ -558,7 +599,7 @@ export default class Homework1_Scene extends Scene {
 	 * 	  <-WRAP|<--o	|								|	o<--|ENDS UP ON THIS SIDE<-
 	 * 			|		|		o						|		|
 	 * 			|		|_______________________________|		|
-	 * 			|												|
+	 * 			|												|  who did this cool ascii art :o
 	 * 			|_______________________________________________|
 	 * 
 	 * It may be helpful to make your own drawings while figuring out the math for this part.
@@ -568,8 +609,21 @@ export default class Homework1_Scene extends Scene {
 	 * @param paddedViewportSize The size of the viewport with padding
 	 */
 	handleScreenWrap(node: GameNode, viewportCenter: Vec2, paddedViewportSize: Vec2): void {
-		// Your code goes here:
-
+		// left, right, up, down bounds of the viewport
+		const leftBound = viewportCenter.x - paddedViewportSize.x / 2;
+		const rightBound = viewportCenter.x + paddedViewportSize.x / 2;
+		const topBound = viewportCenter.y - paddedViewportSize.y / 2;
+		const bottomBound = viewportCenter.y + paddedViewportSize.y / 2;
+		if (node.position.x < leftBound) { //left warps to right
+			node.position.x = rightBound;
+		} else if (node.position.x > rightBound) { // right warps to left :)
+			node.position.x = leftBound;
+		}
+		if (node.position.y < topBound) { // up warps to down
+			node.position.y = bottomBound;
+		} else if (node.position.y > bottomBound) { // down warps to up
+			node.position.y = topBound;
+		}
 	}
 
 	// HOMEWORK 2 - TODO
@@ -598,8 +652,15 @@ export default class Homework1_Scene extends Scene {
 	 * @returns True if the two shapes overlap, false if they do not
 	 */
 	static checkAABBtoCircleCollision(aabb: AABB, circle: Circle): boolean {
-		// Your code goes here:
-		return false;
+		// finds closest point on the aab to  center of circle
+		let closestx = Math.max(aabb.center.x - aabb.halfSize.x, Math.min(circle.center.x, aabb.center.x + aabb.halfSize.x));
+		let closesty = Math.max(aabb.center.y - aabb.halfSize.y, Math.min(circle.center.y, aabb.center.y + aabb.halfSize.y));
+		// calculates distance between circle's center and closest point in aabb
+		let distancex = circle.center.x - closestx;
+		let distancey = circle.center.y - closesty;
+		// if distance < circle's radius, return true for collision
+		let distanceSquared = (distancex * distancex) + (distancey * distancey);
+		return distanceSquared < (circle.radius * circle.radius);
 	}
 
 }

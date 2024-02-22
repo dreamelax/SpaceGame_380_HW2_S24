@@ -9,7 +9,8 @@ export enum Homework2Event {
 	PLAYER_DEAD = "PLAYER_DEAD",
 	SPAWN_FLEET = "SPAWN_FLEET",
 	SHIP_DAMAGE = "SHIP_DAMAGE",
-	SHIP_DEAD = "SHIP_DEAD"
+	SHIP_DEAD = "SHIP_DEAD",
+	PLAYER_DIE = "PLAYER_DIE"
 }
 
 export enum Homework2Shaders {
@@ -23,12 +24,18 @@ export enum Homework2Shaders {
 export enum Homework2Animations {
 	SHIP_IDLE = "idle",
 	SHIP_BOOST = "boost",
-	SHIP_DIE = "explode"
+	SHIP_DIE = "explode",
+	SHIP_DEAD = "dead",
+	PLAYER_DAMAGE = "damage",
+	PLAYER_I_FRAMES_END = "explode",
+	PLAYER_DEAD = "dead",
+	PLAYER_DIE = "explode",
 }
 
 // HOMEWORK 2 - TODO
 /*
  * Make sure this is the key you give to your loaded spritesheet.
+???
  */
 export enum Homework2Names {
 	FLEET_SHIP = "player"

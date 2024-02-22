@@ -49,6 +49,11 @@ export default class SpaceshipPlayerController implements AI {
 
 		this.receiver = new Receiver();
 		this.emitter = new Emitter();
+
+		this.receiver.subscribe(Homework2Event.PLAYER_DAMAGE);
+		this.receiver.subscribe(Homework2Event.PLAYER_DEAD);
+		this.receiver.subscribe(Homework2Event.PLAYER_DIE);
+		this.receiver.subscribe(Homework2Event.PLAYER_I_FRAMES_END);
 	}
 
 	activate(options: Record<string, any>){};
@@ -56,14 +61,15 @@ export default class SpaceshipPlayerController implements AI {
 	handleEvent(event: GameEvent): void {
 		// We need to handle animations when we get hurt
 		if(event.type === Homework2Event.PLAYER_DAMAGE){
-			if(event.data.get("shield") === 0){
-				// Play animation and queue event to end game
-				this.owner.animation.play("explode", false, Homework2Event.PLAYER_DEAD);
-				this.owner.animation.queue("dead", true);
-				this.isDead = true;
-			} else {
-				this.owner.animation.play("shield", false, Homework2Event.PLAYER_I_FRAMES_END);
-			}
+			console.log("DID HE DIE??"+event.data.get("shield"));
+			this.owner.animation.play("shield", false, Homework2Event.PLAYER_I_FRAMES_END);
+			this.speed = (this.speed)/2; // i wanted speed to be reduced by 2 when made
+		}
+		if(event.type === Homework2Event.PLAYER_DEAD){
+			//this.owner.animation.queue("shield", false, Homework2Event.PLAYER_I_FRAMES_END);
+			this.owner.animation.playIfNotAlready("explode", false, Homework2Event.PLAYER_DIE);
+			this.owner.animation.queue("dead", true);
+			this.isDead = true;
 		}
 	}
 
