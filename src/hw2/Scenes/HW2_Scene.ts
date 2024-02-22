@@ -25,7 +25,7 @@ export default class Homework1_Scene extends Scene {
 	// Here we define member variables of our game, and object pools for adding in game objects
 	private player: AnimatedSprite;
 	private playerDead: boolean = false;
-	private playerShield: number = 1;
+	private playerShield: number = 5;
 	private playerinvincible: boolean = false;
 	private mineralAmount: number = 4;
 	private MIN_SPAWN_DISTANCE: number = 100;
